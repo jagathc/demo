@@ -1,0 +1,7 @@
+DROP TABLE IF EXISTS employee;
+
+CREATE TABLE employee (
+  id INT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  manager_id INT DEFAULT NULL
+);
