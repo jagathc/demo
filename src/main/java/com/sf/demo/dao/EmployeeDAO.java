@@ -1,9 +1,9 @@
 package com.sf.demo.dao;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sf.demo.model.Employee;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +14,12 @@ import java.util.Objects;
 public class EmployeeDAO {
 
     private Integer id;
+    @JsonIgnore
     private Integer managerId;
     private String name;
+    @JsonIgnore
     private EmployeeDAO manager;
-    private List<EmployeeDAO> children;
+    private List<EmployeeDAO> managedEmployees;
 
     public static EmployeeDAO createEmployeeDAO(Employee employee) {
         EmployeeDAO employeeDAO = new EmployeeDAO();
@@ -27,21 +29,15 @@ public class EmployeeDAO {
         return employeeDAO;
     }
 
-    public void addChild(EmployeeDAO child) {
-        if (Objects.isNull(children)) {
-            children = new ArrayList<>();
+    public void addManagedEmployee(EmployeeDAO employee) {
+        if (Objects.isNull(managedEmployees)) {
+            managedEmployees = new ArrayList<>();
         }
-        children.add(child);
+        managedEmployees.add(employee);
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder(id + " : " + name );
-
-        if (!CollectionUtils.isEmpty(children)) {
-            children.forEach(child -> sb.append(child.toString()));
-        }
-
-        return sb.toString();
+        return "[" + id + "] " + name;
     }
 }
